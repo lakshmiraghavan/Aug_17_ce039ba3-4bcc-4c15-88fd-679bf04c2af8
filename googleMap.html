@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+        <script src="bower_components/angular/angular.js"></script>
+
+        <script type="text/ng-template" id="googlemap.html">
+            <div id="input">
+                    Longitude:<input type="text"  ng-model="longitude">
+                    Latitude:<input type="text"  ng-model="latitude">
+                    <button ng-click="update()">click</button>
+                </div>
+        </script>
+        <style>
+            #map{
+                height:750px;
+            }
+        </style>
+        <script>
+            angular.module('myApp',[]).directive('myDirective',function(){
+                    return {
+                                templateUrl:'googlemap.html',
+                                link:function(scope,element,attribute){
+                                        scope.update = function(){
+                                            var latitude = parseFloat(scope.latitude);
+                                            var longitude = parseFloat(scope.longitude);
+
+                                                var mapOption = {
+                                                    center:{lat:latitude,lng:longitude},
+                                                    zoom:4
+                                                };
+                                                var map = new google.maps.Map(document.getElementById('map'), mapOption);
+                                                var myLatLong = new google.maps.LatLng(latitude,longitude);
+                                                var marker = new google.maps.Marker({position:myLatLong,map:map});
+                                    }
+                            }
+                    }
+            })
+        </script>
+        </head>
+<body>
+    <my-directive></my-directive>
+    <div id="map"></div>
+</body>
+</html>
